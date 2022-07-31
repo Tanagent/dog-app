@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  const [img, setImg] = useState("");
+  const [dogRow, setDogRow] = useState([]);
+
+  useEffect(() => {
+    fetch('https://dog.ceo/api/breeds/image/random')
+      .then(res => res.json())
+      .then(data => setImg(data.message));
+
+    fetch('https://dog.ceo/api/breeds/image/random/10')
+      .then(res => res.json())
+      .then(data => setDogRow(data.message));
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <img src={img} alt="dog" />
+
+      <div>
+        {
+          dogRow.map((dog, index) => 
+            <img key={index} src={dog} alt={dog} />
+          )
+        }
+      </div>
     </div>
   );
 }
